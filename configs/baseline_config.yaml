@@ -1,0 +1,60 @@
+# Конфігурація для NetSurfP-3.0 датасету
+
+# Шляхи до даних
+data:
+  train_path: "data/raw/netsurf/Train_HHblits.npz"
+  test_cb513_path: "data/raw/netsurf/CB513_HHblits.npz"
+  test_ts115_path: "data/raw/netsurf/TS115_HHblits.npz"
+  max_seq_length: 300  # Максимальна довжина послідовності
+  # було 500, зменшив для оптимізації процесу
+
+# Модель
+model:
+  type: "simple"  # 'hybrid' (CNN+BiGRU) або 'simple' (тільки CNN)
+  input_dim: 50   # AA (20) + HMM (30) = 50 features
+  hidden_dim: 128 # Розмір прихованих шарів (128 оптимально для CPU)
+  num_classes: 3  # 3 для Q3, 8 для Q8
+  dropout: 0.3    # Dropout для регуляризації
+  
+# Тренування
+training:
+  batch_size: 64           # 32-64 оптимально для CPU
+  num_epochs: 100          # Максимум епох
+  learning_rate: 0.001     # Початковий learning rate
+  weight_decay: 0.0001     # L2 регуляризація
+  
+  # Optimizer
+  optimizer: "AdamW"       # AdamW або SGD
+  
+  # Learning rate scheduler
+  scheduler:
+    use: true
+    type: "ReduceLROnPlateau"  # або "StepLR"
+    patience: 5              # Епох без покращення
+    factor: 0.5              # Множник зменшення LR
+    min_lr: 0.00001         # Мінімальний LR
+  
+  # Early stopping
+  early_stopping:
+    use: true
+    patience: 15            # Епох без покращення
+    min_delta: 0.001        # Мінімальне покращення
+  
+  # Gradient clipping
+  grad_clip: 1.0            # Максимальна норма градієнта
+
+# CPU оптимізації  
+cpu:
+  num_threads: 12            # Кількість потоків (фізичні ядра)
+  num_workers: 0            # DataLoader workers (ОБОВ'ЯЗКОВО 0 для Windows)
+  pin_memory: false         # False для CPU
+
+# Логування
+logging:
+  log_dir: "results/baseline"
+  save_frequency: 5         # Зберігати checkpoint кожні N епох
+  tensorboard: false        # TensorBoard (можна вимкнути для швидкості)
+  print_frequency: 10       # Друкувати статистику кожні N батчів
+
+# Відтворюваність
+seed: 42
