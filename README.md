@@ -35,7 +35,7 @@
 ### 1. Клонувати репозиторій
 
 ```bash
-git clone https://github.com/[твій-username]/protein-ssp-project.git
+git clone https://github.com/Nazaza-prog/protein-ssp-project.git
 cd protein-ssp-project
 ```
 
