@@ -3,9 +3,13 @@
 Офіційне джерело: DTU Health Tech
 """
 import urllib.request
+import ssl
 import numpy as np
 from pathlib import Path
 from tqdm import tqdm
+
+# Обхід SSL перевірки
+ssl._create_default_https_context = ssl._create_unverified_context
 
 class DownloadProgressBar(tqdm):
     """Progress bar для urllib"""
