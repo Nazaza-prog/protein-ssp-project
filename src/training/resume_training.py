@@ -1,9 +1,3 @@
-"""
-Продовження тренування з checkpoint
-Підтримка автоматичного fallback на backup при пошкодженні
-
-Розташування: src/training/resume_training.py
-"""
 import torch
 import torch.nn as nn
 import yaml
