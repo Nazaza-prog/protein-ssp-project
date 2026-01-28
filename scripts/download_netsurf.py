@@ -1,7 +1,3 @@
-"""
-Завантаження датасету NetSurfP-3.0 для прогнозування вторинної структури
-Офіційне джерело: DTU Health Tech
-"""
 import urllib.request
 import ssl
 import numpy as np
