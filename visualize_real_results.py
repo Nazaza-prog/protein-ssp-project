@@ -1,8 +1,3 @@
-"""
-Візуалізація з РЕАЛЬНИМИ даними моделі
-Оцінює модель на test set і створює графіки
-"""
-
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
