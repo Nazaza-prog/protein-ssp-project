@@ -1,10 +1,3 @@
-"""
-Тренування моделі SSP на NetSurfP-3.0
-Фінальна версія з усіма оптимізаціями + автозбереження кожної епохи
-Автор: МАН проект з інформатики
-
-Розташування: src/training/train.py
-"""
 import torch
 import torch.nn as nn
 import yaml
@@ -28,9 +21,7 @@ from src.utils.config import (
     safe_save_checkpoint
 )
 
-# ============================================================================
 # GRACEFUL SHUTDOWN
-# ============================================================================
 stop_training = False
 
 def signal_handler(sig, frame):
@@ -49,14 +40,10 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-# ============================================================================
 # CPU ОПТИМІЗАЦІЯ
-# ============================================================================
 setup_cpu_optimization(num_threads=12)
 
-# ============================================================================
 # ФУНКЦІЇ ТРЕНУВАННЯ
-# ============================================================================
 def train_epoch(model, train_loader, criterion, optimizer, device):
     """Один epoch тренування"""
     model.train()
@@ -158,9 +145,7 @@ def save_checkpoint_safely(epoch, model, optimizer, best_val_acc, config, save_d
     
     return success
 
-# ============================================================================
 # ГОЛОВНА ФУНКЦІЯ
-# ============================================================================
 def main():
     print("\n" + "="*70)
     print("ТРЕНУВАННЯ МОДЕЛІ ПРОГНОЗУВАННЯ ВТОРИННОЇ СТРУКТУРИ БІЛКІВ")
@@ -241,9 +226,7 @@ def main():
     save_dir = root_dir / config['logging']['log_dir']
     save_dir.mkdir(parents=True, exist_ok=True)
     
-    # ========================================================================
     # ЦИКЛ ТРЕНУВАННЯ
-    # ========================================================================
     print("\n" + "="*70)
     print("ПОЧАТОК ТРЕНУВАННЯ")
     print("="*70)
@@ -301,12 +284,10 @@ def main():
         if scheduler:
             scheduler.step(val_acc)
         
-        # ====================================================================
         # ЗБЕРЕЖЕННЯ МОДЕЛЕЙ
-        # ====================================================================
         print(f"\n  💾 Збереження checkpoint...")
         
-        # 1. АВТОЗБЕРЕЖЕННЯ ПІСЛЯ КОЖНОЇ ЕПОХИ (ОБОВ'ЯЗКОВО!)
+        # 1. АВТОЗБЕРЕЖЕННЯ ПІСЛЯ КОЖНОЇ ЕПОХИ
         save_checkpoint_safely(
             epoch, model, optimizer, best_val_acc,
             config, save_dir, checkpoint_type='auto'
@@ -331,9 +312,7 @@ def main():
                 config, save_dir, checkpoint_type='archive'
             )
         
-        # ====================================================================
         # EARLY STOPPING
-        # ====================================================================
         if config['training']['early_stopping']['use']:
             if patience_counter >= config['training']['early_stopping']['patience']:
                 print(f"\n⚠️  Early stopping після {epoch} епох")
@@ -362,9 +341,7 @@ def main():
                 print(f"✓ Final checkpoint (найкраща модель з epoch {best_checkpoint['epoch']})")
                 break
     
-    # ========================================================================
     # ФІНАЛЬНА ОЦІНКА
-    # ========================================================================
     print("\n" + "="*70)
     print("ФІНАЛЬНА ОЦІНКА НА ТЕСТОВОМУ НАБОРІ")
     print("="*70 + "\n")
