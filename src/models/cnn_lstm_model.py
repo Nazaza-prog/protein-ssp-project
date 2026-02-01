@@ -1,5 +1,5 @@
 """
-CNN + BiLSTM модель для прогнозування вторинної структури білків
+CNN + BiGRU модель для прогнозування вторинної структури білків
 Оптимізована для CPU тренування
 """
 import torch
@@ -8,7 +8,7 @@ import torch.nn.functional as F
 
 class SSPModel(nn.Module):
     """
-    Hybrid CNN + BiLSTM архітектура для SSP
+    Hybrid CNN + BiGRU архітектура для SSP
     
     Архітектура:
         1. CNN частина - витягує локальні паттерни (мотиви структури)
